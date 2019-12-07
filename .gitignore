@@ -1,0 +1,9 @@
+# acme file
+acme.sh
+.acme.sh.swp
+
+# certifiate folder
+certificates/
+
+# config file
+config.ini
