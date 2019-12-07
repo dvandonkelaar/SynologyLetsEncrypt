@@ -16,6 +16,7 @@ ConfigFile="$CurDir/config.ini"
 if [[ ! -f $ConfigFile ]]; then
 	echo "Config file (config.ini) does not exist. Making it..."
 	echo "Domain=" > "$ConfigFile"
+	exit 1
 fi
 ConfigContent=$(cat "$ConfigFile" | sed -r '/[^=]+=[^=]+/!d' | sed -r 's/\s+=\s/=/g')
 eval "$ConfigContent"
