@@ -91,12 +91,12 @@ if [ $argument = renew ]; then
 	###  Update certs in all installed packages
 	PemFiles=$(find $PackageCertRoot -name *.pem)
 	if [ ! -z "$PemFiles" ]; then
-		for File in $PemFiles; do
+		for File in "$PemFiles"; do
 			:
 			#### Skip ActiveDirectoryServer since it has it's own certificate
 			if [[ $File != *"/DirectoryServerForWindowsDomain/"* ]]; then
-				FileName=$(basename $PemFile)
-				cp "$ExportDir/$CurrentDate/$FileName" "$(dirname $File)/"
+				FileName=$(basename "$PemFile")
+				cp "$ExportDir/$CurrentDate/$FileName" "$(dirname "$File")/"
 			fi
 		done
 	fi
@@ -104,11 +104,11 @@ if [ $argument = renew ]; then
 	# Restart all installed packages
 	Packages=$(ls $PackageCertRoot)
 	if [ ! -z "$Packages" ]; then
-		for Package in $Packages; do
+		for Package in "$Packages"; do
 			:
 			#### Skip ActiveDirectoryServer since it has it's own certificate
 			if [[ $Package != "DirectoryServerForWindowsDomain" ]]; then
-				/usr/syno/bin/synopkg restart $Package
+				/usr/syno/bin/synopkg restart "$Package"
 			fi
 		done
 	fi
