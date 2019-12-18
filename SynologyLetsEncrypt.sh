@@ -70,6 +70,12 @@ if [ $argument = renew ]; then
 	cp "$ExportDir/$CurrentDate/ca.cer" "$ExportDir/$CurrentDate/chain.pem"
 	cp "$ExportDir/$CurrentDate/fullchain.cer" "$ExportDir/$CurrentDate/fullchain.pem"
 
+	#### Create privkey_fullchain.pem for MailPlus Server
+	for cert in "$ExportDir/$CurrentDate/privkey.pem" "$ExportDir/$CurrentDate/cert.pem" "$ExportDir/$CurrentDate/chain.pem"; do
+		cat "${cert}"
+		echo ""
+	done >> "$ExportDir/$CurrentDate/privkey_fullchain.pem"
+
 	####  UpDate used certificates
 	declare -a files=( "$ExportDir/$CurrentDate/cert.pem" "$ExportDir/$CurrentDate/privkey.pem" "$ExportDir/$CurrentDate/chain.pem" "$ExportDir/$CurrentDate/fullchain.pem" )
 
@@ -82,21 +88,26 @@ if [ $argument = renew ]; then
 	####  Restart nginx
 	/usr/syno/sbin/synoservicectl --reload nginx
 
-
-	###  Update and restart all installed packages
-	PemFiles=$(find $PackageCertRoot -name cert.pem)
+	###  Update certs in all installed packages
+	PemFiles=$(find $PackageCertRoot -name *.pem)
 	if [ ! -z "$PemFiles" ]; then
 		for File in $PemFiles; do
 			:
 			#### Skip ActiveDirectoryServer since it has it's own certificate
 			if [[ $File != *"/DirectoryServerForWindowsDomain/"* ]]; then
-				cp "$ExportDir/$CurrentDate/cert.pem" "$(dirname $File)/"
+				FileName=$(basename $PemFile)
+				cp "$ExportDir/$CurrentDate/$FileName" "$(dirname $File)/"
+			fi
+		done
+	fi
 
-				####  Get package name from path
-				IFS="/"
-				read -ra ADDR <<< "$${File/#"$PackageCertRoot/"}"
-				Package=${ADDR[0]}
-
+	# Restart all installed packages
+	Packages=$(ls $PackageCertRoot)
+	if [ ! -z "$Packages" ]; then
+		for Package in $Packages; do
+			:
+			#### Skip ActiveDirectoryServer since it has it's own certificate
+			if [[ $Package != "DirectoryServerForWindowsDomain" ]]; then
 				/usr/syno/bin/synopkg restart $Package
 			fi
 		done
