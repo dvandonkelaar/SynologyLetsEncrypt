@@ -107,7 +107,7 @@ if [ $argument = renew ]; then
 		for Package in $Packages; do
 			:
 			#### Skip ActiveDirectoryServer since it has it's own certificate
-			if [[ $File != *"/ActiveDirectoryServer/"* ]] && [[ $File != *"/DirectoryServerForWindowsDomain/"* ]]; then
+			if [[ $Package != "ActiveDirectoryServer" ]] && [[ $Package != "DirectoryServerForWindowsDomain" ]]; then
 				/usr/syno/bin/synopkg restart "$Package"
 			fi
 		done
