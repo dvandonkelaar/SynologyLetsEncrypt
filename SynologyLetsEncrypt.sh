@@ -1,6 +1,13 @@
 #!/bin/bash
 
 
+#####  Check if we are running as root
+if [ $(id -u) -ne 0 ];then
+	echo "Please run as root"
+	exit 1
+fi
+
+
   #####  DEFAULT VARIABLES
 CertRoot="/usr/syno/etc/certificate/_archive"
 PackageCertRoot="/usr/local/etc/certificate"
@@ -20,13 +27,6 @@ if [[ ! -f $ConfigFile ]]; then
 fi
 ConfigContent=$(cat "$ConfigFile" | sed -r '/[^=]+=[^=]+/!d' | sed -r 's/\s+=\s/=/g')
 eval "$ConfigContent"
-
-
-	#####  Check if we are running as root
-if [ $(id -u) -ne 0 ];then
-	echo "Please run as root"
-	exit 1
-fi
 
 
 	#####  Get latest certificate
