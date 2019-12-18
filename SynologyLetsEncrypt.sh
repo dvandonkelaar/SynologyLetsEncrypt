@@ -94,7 +94,7 @@ if [ $argument = renew ]; then
 		for File in $PemFiles; do
 			:
 			#### Skip ActiveDirectoryServer since it has it's own certificate
-			if [[ $File != *"/ActiveDirectoryServer/"* ]] || [[ $File != *"/DirectoryServerForWindowsDomain/"* ]]; then
+			if [[ $File != *"/ActiveDirectoryServer/"* ]] && [[ $File != *"/DirectoryServerForWindowsDomain/"* ]]; then
 				FileName=$(basename "$File")
 				cp "$ExportDir/$CurrentDate/$FileName" "$(dirname "$File")/"
 			fi
@@ -107,7 +107,7 @@ if [ $argument = renew ]; then
 		for Package in $Packages; do
 			:
 			#### Skip ActiveDirectoryServer since it has it's own certificate
-			if [[ $File != *"/ActiveDirectoryServer/"* ]] || [[ $File != *"/DirectoryServerForWindowsDomain/"* ]]; then
+			if [[ $File != *"/ActiveDirectoryServer/"* ]] && [[ $File != *"/DirectoryServerForWindowsDomain/"* ]]; then
 				/usr/syno/bin/synopkg restart "$Package"
 			fi
 		done
