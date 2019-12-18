@@ -95,7 +95,7 @@ if [ $argument = renew ]; then
 			:
 			#### Skip ActiveDirectoryServer since it has it's own certificate
 			if [[ $File != *"/DirectoryServerForWindowsDomain/"* ]]; then
-				FileName=$(basename "$PemFile")
+				FileName=$(basename "$File")
 				cp "$ExportDir/$CurrentDate/$FileName" "$(dirname "$File")/"
 			fi
 		done
