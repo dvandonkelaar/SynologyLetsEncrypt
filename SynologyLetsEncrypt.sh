@@ -85,7 +85,7 @@ if [ $argument = renew ]; then
 
 	###  Update and restart all installed packages
 	PemFiles=$(find $PackageCertRoot -name cert.pem)
-	if [ ! -z "$PEMFILES" ]; then
+	if [ ! -z "$PemFiles" ]; then
 		for File in $PemFiles; do
 			:
 			#### Skip ActiveDirectoryServer since it has it's own certificate
