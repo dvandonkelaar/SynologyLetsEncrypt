@@ -37,6 +37,7 @@ Please add '--debug' or '--log' to check more details.
 See: https://github.com/Neilpang/acme.sh/wiki/How-to-debug-acme.sh
 ```
 Both TXT values need to be added to the domain
+These TXT-values only need to be added for the first issue. For a renew, the cert will be validated with this values.
 
 
 
